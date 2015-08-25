@@ -64,37 +64,61 @@ window.countNRooksSolutions = function(n) {
 };
 
 
-
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
   var board = new Board({n:n});
   var rows = board.rows();
+  var solution = [];
+  for (var i = 0; i < n; i++) { // set up storage
+    solution.push([]);
+  }
 
   var addRow = function(row) {
     if (row === n) { // base-case
-      return;
+      for (var i = 0; i < rows.length; i++) {
+        solution[i] = rows[i].slice(); // copying each row to our storage.
+      }
     } else {
-      for (var i = 0; i < n; i++) {
-        board.togglePiece(row, i);
-        if (board.hasAnyQueenConflictsOn(row, i)) { // to check any queens conflicts.
-          board.togglePiece(row, i);
+      for (var c = 0; c < n; c++) { // iterating over columns.
+        board.togglePiece(row, c); // put a piece on board.
+        if (board.hasAnyQueenConflictsOn(row, c)) { // check for any conflicts.
+          board.togglePiece(row, c); // take a piece back from the board.
         } else {
-          addRow(row + 1);
+          addRow(row + 1); // move on to next row.
+          board.togglePiece(row, c); // removing a piece after testing.
         }
       }
     }
   };
 
-  var solution = board.rows();
-  console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
+  addRow(0); // start adding pieces at rows.
   return solution;
 };
 
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
-  var solution = undefined; //fixme
+  var board = new Board({n:n});
+  var rows = board.rows();
+  var n = rows.length;
+  var count = 0;
 
-  console.log('Number of solutions for ' + n + ' queens:', solutionCount);
-  return solutionCount;
+  var addRow = function(row) {
+    if (row === n) { // base-case
+      count++;
+    } else {
+      for (var c = 0; c < n; c++) { // iterating over columns.
+        board.togglePiece(row, c); // put a piece on board.
+        if (board.hasAnyQueenConflictsOn(row, c)) { // check for any conflicts.
+          board.togglePiece(row, c); // take a piece back from the board.
+        } else {
+          addRow(row + 1); // move on to next row.
+          board.togglePiece(row, c); // removing a piece after testing.
+        }
+      }
+    }
+  };
+
+  addRow(0); // start adding pieces at rows.
+  return count;
 };

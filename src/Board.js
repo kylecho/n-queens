@@ -128,25 +128,25 @@
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
-    hasMajorDiagonalConflictAt: function(inputX) { // 'x' was 'majorDiagonalColumnIndexAtFirstRow'
+    hasMajorDiagonalConflictAt: function(col) {
     var count = 0;
     var rows = this.rows();
     var n = rows.length;
-    for (var x = inputX, y = 0; x < n; x++, y++) {
-      if (rows[y]) {
-        count += rows[y][x];
+    
+    for (var i = 0; i < n; i++, col++) {
+      if (rows[i][col]) { // ignore undefined and 0.
+        count += 1;
       }
     }
+
     return count > 1;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      var rows = this.rows();
-      var n = rows.length;
-
-      for (var x = -n; x < n; x++) {
-        if (this.hasMajorDiagonalConflictAt(x)) {
+      var n = this.rows().length;
+      for (var c = -n + 1; c < n; c++) {
+        if (this.hasMajorDiagonalConflictAt(c)) {
           return true;
         }
       }
@@ -159,16 +159,20 @@
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
-    hasMinorDiagonalConflictAt: function(inputX) {
+    hasMinorDiagonalConflictAt: function(col) {
       var count = 0;
       var rows = this.rows();
       var n = rows.length;
+      var row = 0;
 
-      for (var x = inputX, y = 0; x >= 0; x--, y++) {
-        if (rows[y]) {
-          count += rows[y][x];
+      while (col >= 0 && row < n) {
+        if (rows[row][col]) { // ignore undefined and 0.
+          count += 1;
         }
+        row++; // move diagonally.
+        col--; // move diagonally.
       }
+
       return count > 1;
     },
 
@@ -177,13 +181,14 @@
       var rows = this.rows();
       var n = rows.length;
 
-      for (var x = n * 2; x >= 0; x--) {
-        if (this.hasMinorDiagonalConflictAt(x)) {
-          if (rows[x]) {
+      for (var c = (n * 2) - 1; c >= 0; c--) {
+        if (this.hasMinorDiagonalConflictAt(c)) {
+          if (rows[c]) {
             return true;
           }
         }
       }
+
       return false;
     }
 
