@@ -16,12 +16,12 @@
 window.findNRooksSolution = function(n) {
   var board = new Board({n:n});
 
-  for (var i = 0; i < n; i++) {
-    for (var j = 0; j < n; j++) {
+  for (var r = 0; r < n; r++) {
+    for (var c = 0; c < n; c++) {
       if (!board.hasAnyRooksConflicts()) {
-        board.togglePiece(i, j);
+        board.togglePiece(r, c);
         if (board.hasAnyRooksConflicts()) {
-          board.togglePiece(i, j);
+          board.togglePiece(r, c);
         }
       }
     }
@@ -30,6 +30,7 @@ window.findNRooksSolution = function(n) {
   var solution = board.rows();
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
+ 
  
   /* Recursive Answer
 
@@ -47,13 +48,13 @@ window.findNRooksSolution = function(n) {
         solution[i] = rows[i].slice();
       }
     } else {
-      for (var i = 0; i < n; i++) {
-        board.togglePiece(row, i); // put a piece on the board.
-        if (board.hasColConflictAt(i)) { // check for any conflicts.
-          board.togglePiece(row, i); // take a piece back from the board.
+      for (var c = 0; c < n; c++) {
+        board.togglePiece(row, c); // put a piece on the board.
+        if (board.hasColConflictAt(c)) { // check for any conflicts.
+          board.togglePiece(row, c); // take a piece back from the board.
         } else {
           addRow(row + 1); // move to the next row.
-          board.togglePiece(row, i); // put a piece on the board.
+          board.togglePiece(row, c); // put a piece on the board.
         }
       }
     }
@@ -63,9 +64,9 @@ window.findNRooksSolution = function(n) {
 
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
-  
-  */
 
+  */
+  
 };
 
 
@@ -81,13 +82,13 @@ window.countNRooksSolutions = function(n) {
       count++;
       return;
     } else {
-      for (var i = 0; i < n; i++) {
-        board.togglePiece(row, i); // put a piece on the board.
-        if (board.hasColConflictAt(i)) { // check for any conflicts.
-          board.togglePiece(row, i); // take a piece back from the board.
+      for (var c = 0; c < n; c++) {
+        board.togglePiece(row, c); // put a piece on the board.
+        if (board.hasColConflictAt(c)) { // check for any conflicts.
+          board.togglePiece(row, c); // take a piece back from the board.
         } else {
           addRow(row + 1); // move to the next row.
-          board.togglePiece(row, i); // put a piece on the board.
+          board.togglePiece(row, c); // put a piece on the board.
         }
       }
     }
