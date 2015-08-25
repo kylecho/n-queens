@@ -30,6 +30,42 @@ window.findNRooksSolution = function(n) {
   var solution = board.rows();
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
+ 
+  /* Recursive Answer
+
+  var board = new Board({n:n});
+  var rows = board.rows();
+  var count = 0;
+  var solution = [];
+  for (var i = 0; i < n; i++) {
+    solution.push([]);
+  }
+
+  var addRow = function(row) {
+    if (row === n) {
+      for (var i = 0; i < n; i++) {
+        solution[i] = rows[i].slice();
+      }
+    } else {
+      for (var i = 0; i < n; i++) {
+        board.togglePiece(row, i); // put a piece on the board.
+        if (board.hasColConflictAt(i)) { // check for any conflicts.
+          board.togglePiece(row, i); // take a piece back from the board.
+        } else {
+          addRow(row + 1); // move to the next row.
+          board.togglePiece(row, i); // put a piece on the board.
+        }
+      }
+    }
+  };
+
+  addRow(0);
+
+  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
+  return solution;
+  
+  */
+
 };
 
 
