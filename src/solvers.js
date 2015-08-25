@@ -92,6 +92,7 @@ window.findNQueensSolution = function(n) {
   };
 
   addRow(0); // start adding pieces at rows.
+  console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
   return solution;
 };
 
@@ -120,5 +121,6 @@ window.countNQueensSolutions = function(n) {
   };
 
   addRow(0); // start adding pieces at rows.
+  console.log('Number of solutions for ' + n + ' queens:', count);
   return count;
 };
