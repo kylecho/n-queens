@@ -179,7 +179,7 @@
 
       for (var x = n * 2; x >= 0; x--) {
         if (this.hasMinorDiagonalConflictAt(x)) {
-          if (rows[y]) {
+          if (rows[x]) {
             return true;
           }
         }
